@@ -17,7 +17,11 @@ type Response = string | string[] | string[][]
 /** Dummy function for authorizing scopes. */
 function authorize() {
     FormApp.getActiveForm(); // Google doesn't pick up the need for this scope.
-    Logger.log("Everything is fine and dandy!");
+    let calendar = getExtraBoardCalendar();
+    if (calendar === undefined)
+        Logger.log("Please create a calendar named \"GET Bus\".")
+    else
+        Logger.log("Everything is fine and dandy!");
 }
 
 /** The main entry point. Is attached to a trigger for the form. */
