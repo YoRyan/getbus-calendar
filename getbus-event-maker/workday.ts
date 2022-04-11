@@ -5,7 +5,7 @@ type Time = {
 }
 
 /** Represents a single work run. */
-type RoadShift = {
+type Piece = {
     run: string;
     block: string;
     reportTime: Time;
@@ -14,13 +14,13 @@ type RoadShift = {
 
 /** Represents a straight shift. */
 type StraightRun = {
-    shift: RoadShift;
+    shift: Piece;
 }
 
 /** Represents a split shift. */
 type SplitRun = {
-    firstHalf: RoadShift;
-    secondHalf: RoadShift;
+    firstHalf: Piece;
+    secondHalf: Piece;
 }
 
 /** Parse a time entered into the Post Bid Report spreadsheet. */
@@ -32,7 +32,7 @@ function parseBidReportTime(value: string): Time | undefined {
         return { hours: parseInt(match[1]), minutes: parseInt(match[2]) };
 }
 
-function* _readBiddedShifts(pbr: GoogleAppsScript.Spreadsheet.Range): Iterable<RoadShift> {
+function* _readBiddedShifts(pbr: GoogleAppsScript.Spreadsheet.Range): Iterable<Piece> {
     for (let row of pbr.getDisplayValues()) {
         let reportTime = parseBidReportTime(row[2]);
         let signOut = parseBidReportTime(row[3]);
@@ -44,7 +44,7 @@ function* _readBiddedShifts(pbr: GoogleAppsScript.Spreadsheet.Range): Iterable<R
 /** Load all runs from the Post Bid Report. */
 function loadBiddedRuns(pbr: GoogleAppsScript.Spreadsheet.Range): Map<string, StraightRun | SplitRun> {
     // Group shifts by common run number.
-    let groupedShifts = new Map<string, RoadShift[]>();
+    let groupedShifts = new Map<string, Piece[]>();
     for (let shift of Array.from(_readBiddedShifts(pbr))) {
         if (groupedShifts.has(shift.run)) {
             let arr = groupedShifts.get(shift.run);
