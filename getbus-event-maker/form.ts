@@ -104,7 +104,7 @@ function* makeRunEvents(r: Response[]): Iterable<Event | AllDayEvent> {
     // Load runs from the Post Bid Report.
     let pbr = SpreadsheetApp
         .openByUrl("https://docs.google.com/spreadsheets/d/1hqlE6HPQFAFQ-DuaXvOZDgXTgfTqaUCHbTlAgOjF1-k/edit")
-        .getSheetByName("Post Bid Report")
+        .getSheetByName("Big Bus Bids")
         .getDataRange()
         .offset(1, 0);
     let runs = loadBiddedRuns(pbr);
